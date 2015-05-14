@@ -32,7 +32,7 @@ public class World {
 		width = image.getWidth();
 		height = image.getHeight();
 		pixels = image.getRGB(0, 0, width, height, pixels, 0, width);
-		for(int y = 0; y < height; y++) {
+		for(int y = 0; y < height; y++) {      //what is the purpose of this portion? i don't understand
 			for(int x = 0; x < width; x++) {
 				if(BlockLib.getFromId(pixels[x + y *width], x, y) != null) {
 					blocks.add(BlockLib.getFromId(pixels[x + y * width], x, y));
@@ -43,7 +43,7 @@ public class World {
 		for(int i = 500; i > 500 - 128; i -= 64) {
 			for(int j = 0; j < 25; j++) {
 				if(BlockLib.getFromId(1, j*32, 250) != null) {      //change first parameter for different color blocks
-					blocks.add(BlockLib.getFromId(10, j*32 + i, i));
+					blocks.add(BlockLib.getFromId(1, j*32 + i, i));
 				}
 			}
 		}
