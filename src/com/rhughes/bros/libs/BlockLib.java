@@ -20,6 +20,11 @@ public class BlockLib {
 		return null;
 	}
 	
+	public static Map<Integer, Sprite> getBlockMap()
+	{
+		return blockMap;
+	}
+	
 	// adds a block to the "library"
 	public static void addBlock(int id, Sprite sprite) {
 		blockMap.put(id, sprite);
