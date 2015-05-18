@@ -24,20 +24,8 @@ public class Block {
         return new Rectangle(x, y, 32, 32);
     }
 
-    public Rectangle getTop() {
-        return new Rectangle(x + 4, y, 24, 4);
-    }
-
-    public Rectangle getBottom() {
-        return new Rectangle(x + 4, y + 28, 24, 4);
-    }
-
-    public Rectangle getRight() {
-        return new Rectangle(x, y, 4, 32);
-    }
-
-    public Rectangle getLeft() {
-        return new Rectangle(x + 28, y, 4, 32);
+    public Rectangle getRectangle() {
+        return new Rectangle(x, y, 32, 32);
     }
 
 }
