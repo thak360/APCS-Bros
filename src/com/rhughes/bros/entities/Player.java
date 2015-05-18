@@ -55,9 +55,13 @@ public class Player extends Mob {
 		if(KeyInput.getKey(KeyEvent.VK_W) && !jumping) {
 			jumping = true;
 			falling = true;
-			dy -= 15;
+			dy -= 10;
 		}
 		super.tick();
+	}
+	public void setPosition(int x, int y)
+	{
+		super.setPosition(x, y);
 	}
 
 	// returns 0 if bottom collision, 1 if top collision, and -1 if no collision
@@ -65,55 +69,80 @@ public class Player extends Mob {
 	public boolean hasVerticalCollision() {
 		for(int i = 0; i < world.getBlocks().size(); i ++) {
 			Block block = world.getBlocks().get(i);
-			if(getBottom().intersects(block.getTop()) && dy > 0){
-				falling = false;
-				jumping = false;
-				return true;
-			}
-			if(getTop().intersects(block.getBottom()) && dy < 0) {
-				dy = 0;
-				return true;
-			}
+				if(getRectangle().intersects(block.getRectangle())) {
+					dy = 0;
+					Rectangle inter = getRectangle().intersection(block.getRectangle());
+					if(inter.contains(getX(),getY()))
+					{
+						setPosition(getX(), (int)inter.getMaxY());
+						jumping=false;
+					}
+					else
+					{
+						setPosition(getX(), (int)inter.getMinY()-50);
+						jumping=false;
+						falling=false;
+					}
+					return true;
+				}
 		}
 		return false;
 	}
 
 	@Override
 	public boolean hasHorizontalCollision() {
-		for(int i = 0; i < world.getBlocks().size(); i ++) {
-			Block block = world.getBlocks().get(i);
-			if(getRight().intersects(block.getLeft())) return true;
-			if(getLeft().intersects(block.getRight())) return true;
-		}
+		if(KeyInput.getKey(KeyEvent.VK_D)||KeyInput.getKey(KeyEvent.VK_A))
+			for(int i = 0; i < world.getBlocks().size(); i ++) {
+				Block block = world.getBlocks().get(i);
+				if(getRectangle().intersects(block.getRectangle())) 
+					{
+					Rectangle inter = getRectangle().intersection(block.getRectangle());
+					if(inter.contains(getX(), getY()))
+						setPosition((int)inter.getMaxX(), getY());
+					else
+						setPosition((int)inter.getMinX(),getY());
+					return true;
+					}
+			}
 		return false;
 	}
 
-	@Override
-    public Rectangle getTop() {
-        return new Rectangle(x + 16, y + 4, 12, 4);
-    }
-
-    @Override
-    public Rectangle getBottom() {
-        return new Rectangle(x + 13, y + 50, 23, 4);
-    }
-
-    @Override
-    public Rectangle getRight() {
-        return new Rectangle(x + 41, y + 8, 4, 40);
-    }
-
-    @Override
-    public Rectangle getLeft() {
-        return new Rectangle(x + 10, y + 8, 4, 40);
+	public Rectangle getRectangle() {
+        return new Rectangle(x, y, 32, 50);
     }
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, 50, 50);
     }
+    
+    
 	
 	public int getScore() {return score;}
 	public int getX() {return x;}
 	public int getY() {return y;}
+
+	@Override
+	public Rectangle getTop() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Rectangle getBottom() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Rectangle getLeft() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Rectangle getRight() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
