@@ -1,99 +1,88 @@
-package com.rhughes.bros.world;
+package com.rhughes.bros.entities;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-import com.rhughes.bros.entities.Entity;
-import com.rhughes.bros.entities.Player;
+import com.rhughes.bros.enums.Direction;
+import com.rhughes.bros.gfx.Animation;
 import com.rhughes.bros.gfx.Sprite;
-import com.rhughes.bros.libs.BlockLib;
-import com.rhughes.bros.libs.Reference;
+import com.rhughes.bros.world.World;
 
-public class World {
+// Any non object being i.e. enemies, players, Finn
+// sprite2 must be the mob standing still facing right
+
+public abstract class Mob extends Entity {
 	
-	ArrayList<Entity> entities = new ArrayList<Entity>();
-	ArrayList<Block> blocks = new ArrayList<Block>();
-	
-	private int width;
-	private int height;
-	private int[] pixels;
-	private Map<Integer, Sprite> blockMap=BlockLib.getBlockMap();
-	int color = 2;
-	
-	public World(String path) {
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(new File(Reference.SPRITE_LOCATION + path));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		width = image.getWidth();
-		height = image.getHeight();
-		pixels = image.getRGB(0, 0, width, height, pixels, 0, width);
-		for(int i = 0; i < 4000; i+=32) {
-				if(blockMap.get(color) != null) {      
-					blocks.add(new Block(blockMap.get(color),i+500,500));
-				}
-			}
-		for(int j = 100; j>=0; j-=32)
-		{
-			if(blockMap.get(color) != null) {     
-				blocks.add(new Block(blockMap.get(color),500,500-j));
-			}
-		}
-		for(int j = 100; j>=0; j-=32)
-		{
-			if(blockMap.get(color) != null) {      
-				blocks.add(new Block(blockMap.get(color),4500,500-j));
-			}
-		}
-		for(int i = 0; i<=100; i+=32)
-		{
-			if(blockMap.get(color) != null) {      
-				blocks.add(new Block(blockMap.get(color),1200+i,416));
-			}
-		}
-	}
-	
-	public void render(Graphics g) {
-		for(Block block : blocks)
-			block.render(g);
-		for(Entity ent : entities)
-			ent.render(g);
+	protected float dx, dy, gravity = 0.5f;
+	protected int maxdy = 7;
+	protected Direction direction;
+	protected boolean falling = true, jumping, moving;
+	protected Animation animeLeft, animeRight;
+	protected Sprite sprite2;
+
+	public Mob(int x, int y, World world) {
+		super(x, y, world);
 	}
 	
 	public void tick() {
-		for(Entity ent : entities)
-			ent.tick();
+					// if moving left/right update "direction" to reflect that
+		if(dx > 0)
+			direction = Direction.Right;
+		else if(dx < 0)
+			direction = Direction.Left;
+					// if it isn't hitting anything, update position (move)
+		if(!hasHorizontalCollision())
+			x += dx;
+		falling=true;
+		if(!hasVerticalCollision() || falling || jumping) {
+			y += dy;
+		}
+					
+		fall();
+					// if moving side to side, make sure "moving" is true
+		if(dx != 0)
+			moving = true;
+		else
+			moving = false;
 	}
 	
-	public void addEntity (Entity ent) {
-		entities.add(ent);
+	public void setPosition(int x, int y)
+	{
+		super.setPosition(x, y);
 	}
 	
-	public ArrayList<Entity> getEntities() {
-		return entities;
+	@Override
+	public void render(Graphics g) {
+		if(moving) 
+			getAnimation().runAnimation(g, x, y);
+		else
+			getStandingStill().render(g, x, y);
 	}
 	
-	public ArrayList<Block> getBlocks() {
-		return blocks;
+	public abstract boolean hasHorizontalCollision();
+	public abstract boolean hasVerticalCollision();
+	
+	// updates "dy" to reflect gravity, but not faster than a certain  speed
+	protected void fall() {
+		if(falling) {
+			dy += gravity;
+			if(dy > maxdy)
+				dy = maxdy;
+		}
 	}
 	
-	public void removeEntity(int index) {
-		entities.remove(index);
+	// if moving right, returns animeRight, else returns animeLeft
+	public Animation getAnimation() {
+		if(direction == Direction.Right)
+			return animeRight;
+		return animeLeft;
 	}
 	
-	public Player getPlayer() {
-		for (Entity ent : entities)
-			if(ent instanceof Player)
-				return (Player)ent;
-		return null;
+	// returns the sprite facing the correct direction standing still
+	public Sprite getStandingStill() {
+		return direction == Direction.Left ? sprite : sprite2;
 	}
+	
+	public boolean isMoving() { return moving; }
+	public Direction getDirection() { return direction; }
 
 }
