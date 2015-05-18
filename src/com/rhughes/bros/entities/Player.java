@@ -121,28 +121,24 @@ public class Player extends Mob {
 	public int getX() {return x;}
 	public int getY() {return y;}
 
-	@Override
-	public Rectangle getTop() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		@Override
+    public Rectangle getTop() {
+        return new Rectangle(x + 16, y + 4, 12, 4);
+    }
 
-	@Override
-	public Rectangle getBottom() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Rectangle getBottom() {
+        return new Rectangle(x + 16, y + 46, 23, 4);
+    }
 
-	@Override
-	public Rectangle getLeft() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Rectangle getRight() {
+        return new Rectangle(x + 41, y + 4, 4, 40);
+    }
 
-	@Override
-	public Rectangle getRight() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Rectangle getLeft() {
+        return new Rectangle(x + 14, y + 4, 4, 40);
+    }
 	
 }
