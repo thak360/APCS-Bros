@@ -32,6 +32,7 @@ public abstract class Mob extends Entity {
 					// if it isn't hitting anything, update position (move)
 		if(!hasHorizontalCollision())
 			x += dx;
+		falling = true;
 		if(!hasVerticalCollision() || falling || jumping) {
 			y += dy;
 		}
