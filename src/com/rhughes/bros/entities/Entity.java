@@ -35,4 +35,10 @@ public abstract class Entity {
 	
 	// the method to make the entity "do" whatever it is coded to do
 	public abstract void tick();
+	
+	public void setPosition(int x, int y)
+	{
+		this.x=x;
+		this.y=y;
+	}
 }
