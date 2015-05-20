@@ -1,6 +1,7 @@
 package com.rhughes.bros.entities;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import com.rhughes.bros.enums.Direction;
 import com.rhughes.bros.gfx.Animation;
@@ -32,6 +33,7 @@ public abstract class Mob extends Entity {
 					// if it isn't hitting anything, update position (move)
 		if(!hasHorizontalCollision())
 			x += dx;
+		falling=true;
 		if(!hasVerticalCollision() || falling || jumping) {
 			y += dy;
 		}
@@ -42,6 +44,11 @@ public abstract class Mob extends Entity {
 			moving = true;
 		else
 			moving = false;
+	}
+	
+	public void setPosition(int x, int y)
+	{
+		super.setPosition(x, y);
 	}
 	
 	@Override
@@ -78,5 +85,25 @@ public abstract class Mob extends Entity {
 	
 	public boolean isMoving() { return moving; }
 	public Direction getDirection() { return direction; }
+	
+	@Override
+    public Rectangle getTop() {
+        return new Rectangle(x + 16, y + 4, 12, 4);
+    }
+
+    @Override
+    public Rectangle getBottom() {
+        return new Rectangle(x + 16, y + 46, 23, 4);
+    }
+
+    @Override
+    public Rectangle getRight() {
+        return new Rectangle(x + 37, y + 4, 4, 40);
+    }
+
+    @Override
+    public Rectangle getLeft() {
+        return new Rectangle(x + 10, y + 8, 4, 40);
+    }
 
 }
