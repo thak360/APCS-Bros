@@ -34,8 +34,12 @@ public class MouseInput extends MouseAdapter {
         int mouse = e.getButton(); //used to check what button was clicked
         clickX = e.getX();
         clickY = e.getY();
-        if(Game.menu.play.contains(clickX, clickY))
+        if(Game.menu.play.contains(clickX, clickY)||Game.pause.resume.contains(clickX, clickY))
         	Game.state = GameState.Game;
+        if(Game.gameOver.restart.contains(clickX, clickY))
+        	Game.state = GameState.Menu;
+        if(Game.gameOver.quit.contains(clickX, clickY)||Game.menu.quit.contains(clickX, clickY))
+        	Game.exit();
     }
 
     @Override
