@@ -16,7 +16,9 @@ import com.rhughes.bros.gfx.window.Camera;
 import com.rhughes.bros.gfx.window.Window;
 import com.rhughes.bros.input.KeyInput;
 import com.rhughes.bros.input.MouseInput;
+import com.rhughes.bros.screens.GameOver;
 import com.rhughes.bros.screens.Menu;
+import com.rhughes.bros.screens.Pause;
 import com.rhughes.bros.utils.ResourceLoader;
 import com.rhughes.bros.world.World;
 
@@ -31,16 +33,19 @@ public class Game extends Canvas implements Runnable {
 	private boolean running = false;
 	private Thread thread;
 	public static Menu menu;
+	public static GameOver gameOver;
 	private Camera camera;
 	private Player player;
 	private World world;
 	private static Game game;
+	public static Pause pause;
 	
 	public Game() {
 		load();
 		menu = new Menu();
 		world = new World("world.png");
-		player = new Player(500, 100, world);
+		gameOver = new GameOver();
+		player = new Player(50, 100, world);
 		MouseInput mouse = new MouseInput();
 		this.addMouseListener(mouse);
 		this.addMouseMotionListener(mouse);
@@ -66,6 +71,14 @@ public class Game extends Canvas implements Runnable {
 				world.tick();
 				camera.tick(world.getPlayer());
 			}
+			if(player.getY()>600)
+			{
+				state=GameState.GameOver;
+			}
+		}
+		if(state==GameState.GameOver)
+		{
+			player.setPosition(50, 100);     //fix this later
 		}
 	}
 	
@@ -87,6 +100,9 @@ public class Game extends Canvas implements Runnable {
         	g.fillRect(0, 0, WIDTH, HEIGHT);
         else if(state == GameState.Menu) {
         	menu.render(g);
+        }
+        else if(state==GameState.GameOver){
+        	gameOver.render(g);
         }
         //render splashscreen
         else if (world != null && state == GameState.Game) {
