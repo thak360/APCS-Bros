@@ -101,5 +101,9 @@ public class EvilThang extends Mob{
 	public Rectangle getRight() {
 		return new Rectangle(x + 5, y + 3, 4, 43);
 	}
+	
+	public void die() {
+		world.removeEntity(this);
+	}
 
 }
