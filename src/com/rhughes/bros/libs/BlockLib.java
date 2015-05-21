@@ -1,93 +1,39 @@
-package com.rhughes.bros.world;
+package com.rhughes.bros.libs;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-import com.rhughes.bros.entities.Entity;
-import com.rhughes.bros.entities.Player;
 import com.rhughes.bros.gfx.Sprite;
-import com.rhughes.bros.libs.BlockLib;
-import com.rhughes.bros.libs.Reference;
+import com.rhughes.bros.gfx.SpriteSheet;
+import com.rhughes.bros.world.Block;
 
-public class World {
+public class BlockLib {
 	
-	ArrayList<Entity> entities = new ArrayList<Entity>();
-	ArrayList<Block> blocks = new ArrayList<Block>();
+	public static final SpriteSheet sheet = new SpriteSheet("32x32_Spritesheet.png");
 	
-	private int width;
-	private int height;
-	private int[] pixels;
-	private Map<Integer, Sprite> blockMap=BlockLib.getBlockMap();
-	int color = 4;
+	public static Map<Integer, Sprite> blockMap = new HashMap<Integer, Sprite>();
 	
-	public World(String path) {
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(new File(Reference.SPRITE_LOCATION + path));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		width = image.getWidth();
-		height = image.getHeight();
-		pixels = image.getRGB(0, 0, width, height, pixels, 0, width);
-		for(int i = 0; i < 4000; i++) {
-				if(blockMap.get(color) != null) {      //change first parameter for different color blocks
-					blocks.add(new Block(blockMap.get(color),i+500,500));
-				}
-			}
-		for(int j = 100; j>=0; j--)
-		{
-			if(blockMap.get(color) != null) {      //change first parameter for different color blocks
-				blocks.add(new Block(blockMap.get(color),500,500-j));
-			}
-		}
-		for(int j = 100; j>=0; j--)
-		{
-			if(blockMap.get(color) != null) {      //change first parameter for different color blocks
-				blocks.add(new Block(blockMap.get(color),4500,500-j));
-			}
-		}
-	}
-	
-	public void render(Graphics g) {
-		for(Block block : blocks)
-			block.render(g);
-		for(Entity ent : entities)
-			ent.render(g);
-	}
-	
-	public void tick() {
-		for(Entity ent : entities)
-			ent.tick();
-	}
-	
-	public void addEntity (Entity ent) {
-		entities.add(ent);
-	}
-	
-	public ArrayList<Entity> getEntities() {
-		return entities;
-	}
-	
-	public ArrayList<Block> getBlocks() {
-		return blocks;
-	}
-	
-	public void removeEntity(int index) {
-		entities.remove(index);
-	}
-	
-	public Player getPlayer() {
-		for (Entity ent : entities)
-			if(ent instanceof Player)
-				return (Player)ent;
+	//returns a block with the given block id
+	public static Block getFromId(int id, int x, int y) {
+		if (blockMap.get(id) != null)
+			return new Block(blockMap.get(id), x, y);
 		return null;
 	}
-
+	
+	
+	
+	public static Map<Integer, Sprite> getBlockMap()
+	{
+		return blockMap;
+	}
+	
+	// adds a block to the "library"
+	public static void addBlock(int id, Sprite sprite) {
+		blockMap.put(id, sprite);
+	}
+	
+	// returns a Sprite
+	public static Sprite blockAt(int x, int y) {
+		return new Sprite(x, y, 32, sheet);
+	}
 }
