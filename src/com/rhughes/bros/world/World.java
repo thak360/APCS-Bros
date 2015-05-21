@@ -23,11 +23,6 @@ public class World {
 	private int[] pixels;
 	
 	public World(String path) {
-		imageRead(path);
-	}
-	
-	public void imageRead(String path)
-	{
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new File(Reference.SPRITE_LOCATION + path));
@@ -71,8 +66,8 @@ public class World {
 		return blocks;
 	}
 	
-	public void removeEntity(int index) {
-		entities.remove(index);
+	public void removeEntity(Entity ent) {
+		entities.remove(ent);
 	}
 	
 	public Player getPlayer() {
