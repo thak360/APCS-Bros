@@ -44,8 +44,8 @@ public class Player extends Mob {
 		                new Sprite(2, 5, 50, sheet),
 		                new Sprite(3, 5, 50, sheet)
 		        };
-		animeRight = new Animation(3, rights);
-		animeLeft = new Animation(3, lefts);
+		animeRight = new Animation(5, rights);
+		animeLeft = new Animation(5, lefts);
 	}
 	
 	public void tick() {
@@ -55,7 +55,7 @@ public class Player extends Mob {
 		if(KeyInput.getKey(KeyEvent.VK_W) && !jumping) {
 			jumping = true;
 			falling = true;
-			dy -= 10;
+			dy -= 7;
 		}
 		super.tick();
 	}
@@ -63,28 +63,25 @@ public class Player extends Mob {
 	{
 		super.setPosition(x, y);
 	}
-
+	
 	// returns 0 if bottom collision, 1 if top collision, and -1 if no collision
 	@Override
 	public boolean hasVerticalCollision() {
 		for(int i = 0; i < world.getBlocks().size(); i ++) {
 			Block block = world.getBlocks().get(i);
-				if(getRectangle().intersects(block.getRectangle())) {
-					dy = 0;
-					Rectangle inter = getRectangle().intersection(block.getRectangle());
-					if(inter.contains(getX(),getY()))
-					{
-						setPosition(getX(), (int)inter.getMaxY());
-						jumping=false;
-					}
-					else
-					{
-						setPosition(getX(), (int)inter.getMinY()-50);
-						jumping=false;
-						falling=false;
-					}
-					return true;
-				}
+			if(getTop().intersects(block.getRectangle())){
+				setPosition(getX(), getY()+1);
+				dy=0;
+				jumping=false;
+				return true;
+			}
+			if(getBottom().intersects(block.getRectangle())){
+				setPosition(getX(),getY()-1);
+				dy=0;
+				falling=false;
+				jumping=false;
+				return true;
+			}
 		}
 		return false;
 	}
@@ -94,20 +91,19 @@ public class Player extends Mob {
 		if(KeyInput.getKey(KeyEvent.VK_D)||KeyInput.getKey(KeyEvent.VK_A))
 			for(int i = 0; i < world.getBlocks().size(); i ++) {
 				Block block = world.getBlocks().get(i);
-				if(getRectangle().intersects(block.getRectangle())) 
-					{
-					Rectangle inter = getRectangle().intersection(block.getRectangle());
-					if(inter.contains(getX(), getY()))
-						setPosition((int)inter.getMaxX(), getY());
-					else
-						setPosition((int)inter.getMinX(),getY());
+				if(getLeft().intersects(block.getRectangle())){
+					setPosition(getX()+1, getY());
 					return true;
-					}
+				}
+				if(getRight().intersects(block.getRectangle())){
+					setPosition(getX()-1,getY());
+					return true;
+				}
 			}
-		return false;
+			return false;
 	}
-
-	public Rectangle getRectangle() {
+	// returns 0 if bottom collision, 1 if top collision, and -1 if no collision
+		public Rectangle getRectangle() {
         return new Rectangle(x, y, 32, 50);
     }
 
@@ -121,24 +117,25 @@ public class Player extends Mob {
 	public int getX() {return x;}
 	public int getY() {return y;}
 
-		@Override
+	@Override
     public Rectangle getTop() {
         return new Rectangle(x + 16, y + 4, 12, 4);
     }
 
     @Override
     public Rectangle getBottom() {
-        return new Rectangle(x + 16, y + 46, 23, 4);
+        return new Rectangle(x + 16, y + 46, 12, 4);
     }
 
     @Override
     public Rectangle getRight() {
-        return new Rectangle(x + 41, y + 4, 4, 40);
+        return new Rectangle(x + 37, y + 4, 4, 40);
     }
 
     @Override
     public Rectangle getLeft() {
-        return new Rectangle(x + 14, y + 4, 4, 40);
+        return new Rectangle(x + 10, y + 8, 4, 40);
     }
+	
 	
 }
