@@ -5,6 +5,8 @@ package com.rhughes.bros.entities;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+import com.rhughes.bros.Game;
+import com.rhughes.bros.enums.GameState;
 import com.rhughes.bros.gfx.Animation;
 import com.rhughes.bros.gfx.Sprite;
 import com.rhughes.bros.gfx.SpriteSheet;
@@ -16,6 +18,8 @@ public class Player extends Mob {
 	
 	private static SpriteSheet sheet = new SpriteSheet("player.png");
 	private int score;
+	private boolean canJumpAgain;
+	private boolean jumped;
 
 	public Player(int x, int y, World world) {
 		super(x, y, world);
@@ -50,15 +54,27 @@ public class Player extends Mob {
 	
 	public void tick() {
 		dx = 0;
-		if(KeyInput.getKey(KeyEvent.VK_D)) dx += 3;
-		if(KeyInput.getKey(KeyEvent.VK_A)) dx -= 3;
-		if(KeyInput.getKey(KeyEvent.VK_W) && !jumping) {
+		if(KeyInput.getKey(KeyEvent.VK_D)) dx += 4;
+		if(KeyInput.getKey(KeyEvent.VK_A)) dx -= 4;
+		if(KeyInput.getKey(KeyEvent.VK_W) && !jumped) jump();
+		if(!KeyInput.getKey(KeyEvent.VK_W) && !jumped && jumping) {
+			canJumpAgain = true;
+		}
+		super.tick();
+	}
+	
+	private void jump() {
+		if(!jumping){
 			jumping = true;
 			falling = true;
 			dy -= 7;
 		}
-		super.tick();
+		if(jumping && canJumpAgain){
+			jumped = true;
+			dy -= 8;
+		}
 	}
+
 	public void setPosition(int x, int y)
 	{
 		super.setPosition(x, y);
@@ -67,12 +83,12 @@ public class Player extends Mob {
 	// returns 0 if bottom collision, 1 if top collision, and -1 if no collision
 	@Override
 	public boolean hasVerticalCollision() {
+		int [] pixels= World.getPixelArray();
 		for(int i = 0; i < world.getBlocks().size(); i ++) {
 			Block block = world.getBlocks().get(i);
 			if(getTop().intersects(block.getRectangle())){
 				setPosition(getX(), getY()+1);
 				dy=0;
-				jumping=false;
 				return true;
 			}
 			if(getBottom().intersects(block.getRectangle())){
@@ -80,6 +96,8 @@ public class Player extends Mob {
 				dy=0;
 				falling=false;
 				jumping=false;
+				canJumpAgain = false;
+				jumped = false;
 				return true;
 			}
 		}
