@@ -15,8 +15,8 @@ import com.rhughes.bros.libs.Reference;
 
 public class World {
 	
-	ArrayList<Entity> entities = new ArrayList<Entity>();
-	ArrayList<Block> blocks = new ArrayList<Block>();
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private ArrayList<Block> blocks = new ArrayList<Block>();
 	
 	private int width;
 	private int height;
