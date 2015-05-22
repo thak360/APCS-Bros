@@ -16,6 +16,12 @@ public class Block {
 		this.y = y;
 	}
 	
+	public int getX()
+	{return x;}
+	
+	public int getY()
+	{return y;}
+	
 	public void render(Graphics g) {
 		sprite.render(g, x, y);
 	}
