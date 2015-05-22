@@ -15,10 +15,8 @@ public class Menu {
 	public  Button play, options, quit;
 	
 	public  Menu() {
-		int fillerY = 220;
-		play = new Button(Reference.CENTER_X - 125, fillerY, 225, 50, GameState.Game, "powerup").setText("Play");
-		options = new Button(Reference.CENTER_X - 125, fillerY += 75, 225, 50).setText("Options");
-		quit = new Button(Reference.CENTER_X - 125, fillerY += 75, 225, 50).setText("Quit");
+		play = new Button(Reference.CENTER_X - 125, 250, 225, 50, GameState.Game, "powerup").setText("Play");
+		quit = new Button(Reference.CENTER_X - 125, 370, 225, 50).setText("Quit");
 	}
 	
 	public  void render(Graphics g) {
