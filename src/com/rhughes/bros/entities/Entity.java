@@ -28,6 +28,11 @@ public abstract class Entity {
 	public abstract Rectangle getLeft();
 	public abstract Rectangle getRight();
 	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 	// render method necessary to print to screen for each class
 	public  void render(Graphics g) {
 		sprite.render(g, x, y);
