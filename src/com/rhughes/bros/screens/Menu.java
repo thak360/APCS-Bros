@@ -28,7 +28,6 @@ public class Menu {
 		g.setFont(liner);
 		
 		play.drawButton(g, 50);
-		options.drawButton(g, 12);
 		quit.drawButton(g, 62);
 	}
 
