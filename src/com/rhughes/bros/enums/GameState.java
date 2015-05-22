@@ -8,6 +8,7 @@ public enum GameState {
 	Game,
 	Options,
 	Loading,
-	Pause;
+	Pause,
+	GameOver;
 
 }
