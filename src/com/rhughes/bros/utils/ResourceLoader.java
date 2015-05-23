@@ -18,6 +18,7 @@ public class ResourceLoader {
 		try {
 			Images.title = loader.loadImage("title.png");
 			Images.spritesheet = loader.loadImage("32x32_Spritesheet.png");
+			Images.gameOver = loader.loadImage("gameOver.png");
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
