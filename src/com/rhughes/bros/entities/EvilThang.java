@@ -1,12 +1,11 @@
 package com.rhughes.bros.entities;
 
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
 import com.rhughes.bros.enums.Direction;
+import com.rhughes.bros.gfx.Animation;
 import com.rhughes.bros.gfx.Sprite;
 import com.rhughes.bros.gfx.SpriteSheet;
-import com.rhughes.bros.input.KeyInput;
 import com.rhughes.bros.world.Block;
 import com.rhughes.bros.world.World;
 
@@ -32,14 +31,16 @@ public class EvilThang extends Mob{
 		                new Sprite(4, 2, 46, sheet)
 		                
 		        };
+		animeLeft = new Animation(4, lefts);
+		animeRight = new Animation(4, rights);
 	}
 
 	@Override
 	public boolean hasHorizontalCollision() {
 		for(int i = 0; i < world.getBlocks().size(); i ++) {
 			Block block = world.getBlocks().get(i);
-			if(getRight().intersects(block.getRectangle())) return true;
-			if(getLeft().intersects(block.getRectangle())) return true;
+			if(getRight().intersects(block.getBounds())) return true;
+			if(getLeft().intersects(block.getBounds())) return true;
 		}
 		return false;
 	}
@@ -48,12 +49,12 @@ public class EvilThang extends Mob{
 	public boolean hasVerticalCollision() {
 		for(int i = 0; i < world.getBlocks().size(); i ++) {
 			Block block = world.getBlocks().get(i);
-			if(getBottom().intersects(block.getRectangle()) && dy > 0){
+			if(getBottom().intersects(block.getBounds()) && dy > 0){
 				falling = false;
 				jumping = false;
 				return true;
 			}
-			if(getTop().intersects(block.getRectangle()) && dy < 0) {
+			if(getTop().intersects(block.getBounds()) && dy < 0) {
 				dy = 0;
 				return true;
 			}
