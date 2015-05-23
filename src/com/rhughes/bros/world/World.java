@@ -35,9 +35,9 @@ public class World {
 		for(int i = 0; i< width; i ++){
 			for(int j =0; j<height;j++){
 				if(pixels[i+j*width]==pixels[359])
-					blocks.add(new Block(blockMap.get(1), i*32,j*32));
+					blocks.add(new Block(BlockLib.blockMap.get(1), i*32,j*32));
 				if(pixels[i+j*width]==pixels[440])
-					blocks.add(new Block(blockMap.get(3), i*32,j*32));
+					blocks.add(new Block(BlockLib.blockMap.get(3), i*32,j*32));
 			}
 		}
 	}
