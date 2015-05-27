@@ -22,6 +22,11 @@ public class World {
 	private int height;
 	private int[] pixels;
 	
+	public ArrayList<Block> getBlockArray()
+	{
+		return blocks;
+	}
+	
 	public World(String path) {
 		BufferedImage image = null;
 		try {
@@ -34,12 +39,28 @@ public class World {
 		pixels = image.getRGB(0, 0, width, height, pixels, 0, width);
 		for(int i = 0; i< width; i ++){
 			for(int j =0; j<height;j++){
-				if(pixels[i+j*width]==pixels[359])
-					blocks.add(new Block(BlockLib.blockMap.get(1), i*32,j*32));
-				if(pixels[i+j*width]==pixels[440])
-					blocks.add(new Block(BlockLib.blockMap.get(3), i*32,j*32));
+				if(pixels[i+j*width]==pixels[9*70])
+				{
+					blocks.add(new Block(blockMap.get(1), i*32,j*32));
+					if(!doneCount) finishBlock++;
+				}
+				if(pixels[i+j*width]==pixels[14*70])
+				{
+					blocks.add(new Block(blockMap.get(3),i*32, j*32));
+					if(!doneCount) finishBlock++;
+				}
+				if(pixels[i+j*width] == pixels[69+8*70])
+				{
+					blocks.add(new Block(blockMap.get(2), i*32,j*32));
+					doneCount = true;
+				}
 			}
 		}
+	}
+	
+	public int getFinishBlock()
+	{
+		return finishBlock;
 	}
 	
 	public void render(Graphics g) {
@@ -78,14 +99,14 @@ public class World {
 	}
 	
 	public Block find(int x, int y){
-		for (int i = 0; i < blocks.size(); i++){
-			int x2 = blocks.get(i).getX();
-			int y2 = blocks.get(i).getY();
+		for (Block block : blocks){
+			int x2 = block.getX();
+			int y2 = block.getY();
 			if (x > x2 && x < x2 + 32)
 				if(y > y2 && y < y2 + 32)
-					return blocks.get(i);
+					return block;
 		}
-		return null;
+		return blocks.get(0);
 	}
 
 }
