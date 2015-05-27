@@ -40,6 +40,10 @@ public class Block {
         return new Rectangle(x + 28, y, 4, 32);
     }
     
+    public Rectangle getRectangle() {
+    	return new Rectangle(x, y, 32, 32);
+    }
+    
     public int getX(){return x;}
     public int getY(){return y;}
 
