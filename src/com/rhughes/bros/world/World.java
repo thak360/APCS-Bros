@@ -59,12 +59,12 @@ public class World {
 				}
 				if(pixels[i+j*width]==pixels[14*70])
 				{
-					blocks.add(new Block(blockMap.get(3),i*32, j*32));
+					blocks.add(new Block(blockMap.get(3),i * 32, j * 32));
 					if(!doneCount)finishBlock++;
 				}
 				if(pixels[i+j*width]==pixels[69+8*70])
 				{
-					blocks.add(new Block(blockMap.get(2), i*32,j*32));
+					blocks.add(new Block(blockMap.get(2), i * 32,j*32));
 					doneCount=true;
 				}
 			}
