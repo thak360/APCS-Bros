@@ -6,10 +6,13 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 import org.lwjgl.openal.AL;
 
+import com.rhughes.bros.entities.EvilThang;
 import com.rhughes.bros.entities.Player;
 import com.rhughes.bros.enums.GameState;
 import com.rhughes.bros.gfx.window.Camera;
@@ -36,14 +39,16 @@ public class Game extends Canvas implements Runnable {
 	public static GameOver gameOver;
 	private Camera camera;
 	private Player player;
-	private World world;
+	public static World world;
 	private static Game game;
 	public static Pause pause;
+	private ArrayList<EvilThang> enemies= new ArrayList<EvilThang>();
 	
 	public Game() {
 		load();
 		menu = new Menu();
-		world = new World("world.png");
+		pause = new Pause();
+		world = new World("Level1.png");
 		gameOver = new GameOver();
 		player = new Player(50, 100, world);
 		MouseInput mouse = new MouseInput();
@@ -51,6 +56,7 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseMotionListener(mouse);
 		camera = new Camera();
 		this.addKeyListener(new KeyInput());
+		enemies.add(new EvilThang(150,100,world));
 	}
 	
 	// initializes all the needed variables and loads the resources with ResourceLoader
@@ -71,14 +77,23 @@ public class Game extends Canvas implements Runnable {
 				world.tick();
 				camera.tick(world.getPlayer());
 			}
-			if(player.getY()>600)
+			if(player.getY()>395)
 			{
 				state=GameState.GameOver;
 			}
 		}
 		if(state==GameState.GameOver)
 		{
-			player.setPosition(50, 100);     //fix this later
+			player.setPosition(50, 100);
+		}
+		if(KeyInput.getKey(KeyEvent.VK_P))
+		{
+			state=GameState.Pause;
+		}
+		for(EvilThang a: enemies)
+		{
+			if(player.getRectangle().intersects(a.getRectangle()))
+				state=GameState.GameOver;
 		}
 	}
 	
@@ -104,6 +119,8 @@ public class Game extends Canvas implements Runnable {
         else if(state==GameState.GameOver){
         	gameOver.render(g);
         }
+        else if(state==GameState.Pause)
+        	pause.render(g);
         //render splashscreen
         else if (world != null && state == GameState.Game) {
             //renderBackground(g);
