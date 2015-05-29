@@ -4,7 +4,10 @@ package com.rhughes.bros.entities;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
+import com.rhughes.bros.Game;
+import com.rhughes.bros.enums.GameState;
 import com.rhughes.bros.gfx.Animation;
 import com.rhughes.bros.gfx.Sprite;
 import com.rhughes.bros.gfx.SpriteSheet;
@@ -16,6 +19,9 @@ public class Player extends Mob {
 	
 	private static SpriteSheet sheet = new SpriteSheet("player.png");
 	private int score;
+	private boolean canJumpAgain;
+	private boolean jumped;
+	private ArrayList<Block> blocks = Game.world.getBlockArray();
 
 	public Player(int x, int y, World world) {
 		super(x, y, world);
@@ -44,34 +50,59 @@ public class Player extends Mob {
 		                new Sprite(2, 5, 50, sheet),
 		                new Sprite(3, 5, 50, sheet)
 		        };
-		animeRight = new Animation(3, rights);
-		animeLeft = new Animation(3, lefts);
+		animeRight = new Animation(5, rights);
+		animeLeft = new Animation(5, lefts);
 	}
 	
 	public void tick() {
+		if(getRectangle().intersects(blocks.get(world.getFinishBlock()).getRectangle()))
+		{
+			Game.exit();
+		}
 		dx = 0;
-		if(KeyInput.getKey(KeyEvent.VK_D)) dx += 3;
-		if(KeyInput.getKey(KeyEvent.VK_A)) dx -= 3;
-		if(KeyInput.getKey(KeyEvent.VK_W) && !jumping) {
-			jumping = true;
-			falling = true;
-			dy -= 15;
+		if(KeyInput.getKey(KeyEvent.VK_D)) dx += 4;
+		if(KeyInput.getKey(KeyEvent.VK_A)) dx -= 4;
+		if(KeyInput.getKey(KeyEvent.VK_W) && !jumped) jump();
+		if(!KeyInput.getKey(KeyEvent.VK_W) && !jumped && jumping) {
+			canJumpAgain = true;
 		}
 		super.tick();
 	}
+	
+	private void jump() {
+		if(!jumping){
+			jumping = true;
+			falling = true;
+			dy -= 7;
+		}
+		if(jumping && canJumpAgain){
+			jumped = true;
+			dy = -7;
+		}
+	}
 
+	public void setPosition(int x, int y)
+	{
+		super.setPosition(x, y);
+	}
+	
 	// returns 0 if bottom collision, 1 if top collision, and -1 if no collision
 	@Override
 	public boolean hasVerticalCollision() {
 		for(int i = 0; i < world.getBlocks().size(); i ++) {
 			Block block = world.getBlocks().get(i);
-			if(getBottom().intersects(block.getTop()) && dy > 0){
-				falling = false;
-				jumping = false;
+			if(getTop().intersects(block.getRectangle())){
+				setPosition(getX(), getY()+1);
+				dy=0;
 				return true;
 			}
-			if(getTop().intersects(block.getBottom()) && dy < 0) {
-				dy = 0;
+			if(getBottom().intersects(block.getRectangle())){
+				setPosition(getX(),getY()-1);
+				dy=0;
+				falling=false;
+				jumping=false;
+				canJumpAgain = false;
+				jumped = false;
 				return true;
 			}
 		}
@@ -80,13 +111,34 @@ public class Player extends Mob {
 
 	@Override
 	public boolean hasHorizontalCollision() {
-		for(int i = 0; i < world.getBlocks().size(); i ++) {
-			Block block = world.getBlocks().get(i);
-			if(getRight().intersects(block.getLeft())) return true;
-			if(getLeft().intersects(block.getRight())) return true;
-		}
-		return false;
+		if(KeyInput.getKey(KeyEvent.VK_D)||KeyInput.getKey(KeyEvent.VK_A))
+			for(int i = 0; i < world.getBlocks().size(); i ++) {
+				Block block = world.getBlocks().get(i);
+				if(getLeft().intersects(block.getRectangle())){
+					setPosition(getX()+1, getY());
+					return true;
+				}
+				if(getRight().intersects(block.getRectangle())){
+					setPosition(getX()-1,getY());
+					return true;
+				}
+			}
+			return false;
 	}
+	// returns 0 if bottom collision, 1 if top collision, and -1 if no collision
+		public Rectangle getRectangle() {
+        return new Rectangle(x, y, 32, 50);
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, 50, 50);
+    }
+    
+    
+	
+	public int getScore() {return score;}
+	public int getX() {return x;}
+	public int getY() {return y;}
 
 	@Override
     public Rectangle getTop() {
@@ -95,25 +147,18 @@ public class Player extends Mob {
 
     @Override
     public Rectangle getBottom() {
-        return new Rectangle(x + 13, y + 50, 23, 4);
+        return new Rectangle(x + 16, y + 46, 12, 4);
     }
 
     @Override
     public Rectangle getRight() {
-        return new Rectangle(x + 41, y + 8, 4, 40);
+        return new Rectangle(x + 37, y + 4, 4, 40);
     }
 
     @Override
     public Rectangle getLeft() {
         return new Rectangle(x + 10, y + 8, 4, 40);
     }
-
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, 50, 50);
-    }
 	
-	public int getScore() {return score;}
-	public int getX() {return x;}
-	public int getY() {return y;}
 	
 }
