@@ -9,7 +9,9 @@ public class Block {
 	
 	private int x, y;
 	private Sprite sprite;
-
+	
+	/* @param sprite the 1 pixel image representing th block
+	@param x, y the location of the block */
 	public Block(Sprite sprite, int x, int y) {
 		this.sprite = sprite;
 		this.x = x;
@@ -22,6 +24,7 @@ public class Block {
 	public int getY()
 	{return y;}
 	
+	/* renders the block */
 	public void render(Graphics g) {
 		sprite.render(g, x, y);
 	}
