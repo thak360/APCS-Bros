@@ -8,12 +8,12 @@ import com.rhughes.bros.gfx.Animation;
 import com.rhughes.bros.gfx.Sprite;
 import com.rhughes.bros.world.World;
 
-// Any non object being i.e. enemies, players, Finn
+// Any non object being i.e. enemies, players
 // sprite2 must be the mob standing still facing right
 
 public abstract class Mob extends Entity {
 	
-	protected float dx, dy, gravity = 0.5f;
+	protected float dx, dy, gravity = 0.3f;
 	protected int maxdy = 7;
 	protected Direction direction;
 	protected boolean falling = true, jumping, moving;
