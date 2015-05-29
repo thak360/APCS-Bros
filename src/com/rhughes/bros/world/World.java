@@ -25,6 +25,7 @@ public class World {
 	private int width;
 	private int height;
 	private static int[] pixels;
+	private Map<Integer, Sprite> blockMap=BlockLib.getBlockMap();
 	int color = 2;
 	private int finishBlock=0;
 	private boolean doneCount=false;
@@ -34,12 +35,13 @@ public class World {
 		imageRead(path);
 	}
 	
-	/* @return an ArrayList holding every block*/
+	/* @return an ArrayList holding every block (for ticking the world) */
 	public ArrayList<Block> getBlockArray()
 	{
 		return blocks;
 	}
 	
+	/* reads image in from path, 1 pixel = 1 block */
 	public void imageRead(String path)
 	{
 		BufferedImage image = null;
@@ -55,24 +57,24 @@ public class World {
 			for(int j =0; j<height;j++){
 				if(pixels[i+j*width]==pixels[9*70])
 				{
-					blocks.add(new Block(BlockLib.blockMap.get(1), i*32,j*32));
+					blocks.add(new Block(blockMap.get(1), i*32,j*32));
 					if(!doneCount)finishBlock++;
 				}
 				if(pixels[i+j*width]==pixels[14*70])
 				{
-					blocks.add(new Block(BlockLib.blockMap.get(3),i * 32, j * 32));
+					blocks.add(new Block(blockMap.get(3),i * 32, j * 32));
 					if(!doneCount)finishBlock++;
 				}
 				if(pixels[i+j*width]==pixels[69+8*70])
 				{
-					blocks.add(new Block(BlockLib.blockMap.get(2), i * 32,j*32));
+					blocks.add(new Block(blockMap.get(2), i * 32,j*32));
 					doneCount=true;
 				}
 			}
 		}
 	}
 	
-	
+	/* @return returns the last block that matters (used for collision while reading in) */
 	public int getFinishBlock()
 	{
 		return finishBlock;
@@ -89,6 +91,7 @@ public class World {
 		return blocks.get(0);
 	}
 	
+	/* @param g the Graphics object that prints to the canvas */
 	public void render(Graphics g) {
 		for(Block block : blocks)
 			block.render(g);
@@ -96,27 +99,32 @@ public class World {
 			ent.render(g);
 	}
 	
+	/* ticks everything in the World */
 	public void tick() {
 		for(Entity ent : entities)
 			ent.tick();
 	}
 	
+	/* @param ent the entity to be put in world */
 	public void addEntity (Entity ent) {
 		entities.add(ent);
 	}
 	
+	/* @return every entity in the world */
 	public ArrayList<Entity> getEntities() {
 		return entities;
 	}
 	
+	/* @return every Block in World */
 	public ArrayList<Block> getBlocks() {
 		return blocks;
 	}
-	
+	 /* @param index the index of the entity you want removed */
 	public void removeEntity(int index) {
 		entities.remove(index);
 	}
 	
+	/* @return the player */
 	public Player getPlayer() {
 		for (Entity ent : entities)
 			if(ent instanceof Player)
