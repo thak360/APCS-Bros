@@ -30,10 +30,12 @@ public class World {
 	private int finishBlock=0;
 	private boolean doneCount=false;
 	
+	/* @param path the name and location of the image representing the level */
 	public World(String path) {
 		imageRead(path);
 	}
 	
+	/* @return an ArrayList holding */
 	public ArrayList<Block> getBlockArray()
 	{
 		return blocks;
