@@ -35,7 +35,7 @@ public class World {
 		imageRead(path);
 	}
 	
-	/* @return an ArrayList holding */
+	/* @return an ArrayList holding every block*/
 	public ArrayList<Block> getBlockArray()
 	{
 		return blocks;
