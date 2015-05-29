@@ -12,18 +12,25 @@ import com.rhughes.bros.utils.Button;
 
 public class Pause {
 	
-	public  Button resume,quit,restart;
+	public  Button resume, restart, quit;
 	
 	public  Pause() {
-		quit = new Button(Reference.CENTER_X - 112, 370, 225, 50).setText("Quit");
-		restart = new Button(Reference.CENTER_X - 112, 150, 225, 50).setText("Menu");
-		resume=new Button(Reference.CENTER_X-112,295,225,50, GameState.Menu, "powerup").setText("Home");
+		int fillerY = 220;
+		resume = new Button(Reference.CENTER_X - 112, fillerY, 225, 50, GameState.Game, "powerup").setText("Play");
+		restart = new Button(Reference.CENTER_X - 125, fillerY += 75, 250, 50).setText("Restart");
+		quit = new Button(Reference.CENTER_X - 112	, fillerY += 75, 225, 50).setText("Quit");
 	}
 	
-	public  void render(Graphics g){
-		resume.drawButton(g, 47);
+	public  void render(Graphics g) {
+		g.setColor(Color.darkGray);
+		g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
+		
+		Font liner = new Font("Liner", Font.PLAIN, 32);
+		g.setFont(liner);
+		
+		resume.drawButton(g, 50);
+		restart.drawButton(g, 12);
 		quit.drawButton(g, 62);
-		restart.drawButton(g, 47);
 	}
 
 }
