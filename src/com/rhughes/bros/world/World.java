@@ -53,21 +53,21 @@ public class World {
 		width = image.getWidth();
 		height = image.getHeight();
 		pixels = image.getRGB(0, 0, width, height, pixels, 0, width);
-		for(int i = 0; i< width; i ++){
+		for(int i = 0; i< width; i++){
 			for(int j =0; j<height;j++){
-				if(pixels[i+j*width]==pixels[9*70])
+				if(pixels[i + j*width] == pixels[9 * 70])
 				{
-					blocks.add(new Block(blockMap.get(1), i*32,j*32));
+					blocks.add(new Block(blockMap.get(1), i*32, j*32));
 					if(!doneCount)finishBlock++;
 				}
-				if(pixels[i+j*width]==pixels[14*70])
+				if(pixels[i + j*width] == pixels[14 * 70])
 				{
-					blocks.add(new Block(blockMap.get(3),i * 32, j * 32));
-					if(!doneCount)finishBlock++;
+					blocks.add(new Block(blockMap.get(3), i * 32, j * 32));
+					if(!doneCount) finishBlock++;
 				}
-				if(pixels[i+j*width]==pixels[69+8*70])
+				if(pixels[i + j*width] == pixels[ 69 + 8*70])
 				{
-					blocks.add(new Block(blockMap.get(2), i * 32,j*32));
+					blocks.add(new Block(blockMap.get(2), i * 32, j * 32));
 					doneCount=true;
 				}
 			}
