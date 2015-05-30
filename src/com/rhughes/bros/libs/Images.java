@@ -12,5 +12,6 @@ public class Images {
 	
 	public static BufferedImage blockGreen;
 	public static BufferedImage blockBlue;
+	public static BufferedImage youWin;
 
 }
