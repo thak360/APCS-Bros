@@ -22,7 +22,7 @@ public abstract class Entity {
 		world.addEntity(this);
 	}
 	
-	// methods to get the bounds of the entity
+	//@return Rectangle representing each part of the entity
 	public abstract Rectangle getTop();
 	public abstract Rectangle getBottom();
 	public abstract Rectangle getLeft();
@@ -36,6 +36,7 @@ public abstract class Entity {
 	// the method to make the entity "do" whatever it is coded to do
 	public abstract void tick();
 	
+	//sets the entity's position to @Param x and @Param y
 	public void setPosition(int x, int y)
 	{
 		this.x=x;
