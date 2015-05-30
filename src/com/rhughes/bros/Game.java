@@ -40,7 +40,7 @@ public class Game extends Canvas implements Runnable {
 	public static GameOver gameOver;
 	public static YouWin youWin;
 	private Camera camera;
-	private Player player;
+	public static Player player;
 	public static World world;
 	private static Game game;
 	public static Pause pause;
