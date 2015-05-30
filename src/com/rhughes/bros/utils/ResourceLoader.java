@@ -20,6 +20,7 @@ public class ResourceLoader {
 			Images.spritesheet = loader.loadImage("32x32_Spritesheet.png");
 			Images.gameOver = loader.loadImage("gameOver.png");
 			Images.enemy = loader.loadImage("Enemy.png");
+			Images.youWin = loader.loadImage("youWin.png");
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
