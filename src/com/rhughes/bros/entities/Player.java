@@ -57,7 +57,7 @@ public class Player extends Mob {
 	public void tick() {
 		if(getRectangle().intersects(blocks.get(world.getFinishBlock()).getRectangle()))
 		{
-			Game.exit();
+			Game.state=GameState.youWin;
 		}
 		dx = 0;
 		if(KeyInput.getKey(KeyEvent.VK_D)) dx += 4;
