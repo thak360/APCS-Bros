@@ -22,6 +22,7 @@ import com.rhughes.bros.input.MouseInput;
 import com.rhughes.bros.screens.GameOver;
 import com.rhughes.bros.screens.Menu;
 import com.rhughes.bros.screens.Pause;
+import com.rhughes.bros.screens.YouWin;
 import com.rhughes.bros.utils.ResourceLoader;
 import com.rhughes.bros.world.World;
 
@@ -37,6 +38,7 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 	public static Menu menu;
 	public static GameOver gameOver;
+	public static YouWin youWin;
 	private Camera camera;
 	private Player player;
 	public static World world;
@@ -50,6 +52,7 @@ public class Game extends Canvas implements Runnable {
 		pause = new Pause();
 		world = new World("Level1.png");
 		gameOver = new GameOver();
+		youWin = new YouWin();
 		player = new Player(50, 100, world);
 		MouseInput mouse = new MouseInput();
 		this.addMouseListener(mouse);
@@ -121,6 +124,8 @@ public class Game extends Canvas implements Runnable {
         }
         else if(state==GameState.Pause)
         	pause.render(g);
+        else if(state==GameState.youWin)
+        	youWin.render(g);
         //render splashscreen
         else if (world != null && state == GameState.Game) {
             //renderBackground(g);
