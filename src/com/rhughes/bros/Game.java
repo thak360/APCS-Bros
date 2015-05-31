@@ -85,7 +85,7 @@ public class Game extends Canvas implements Runnable {
 				world.tick();
 				camera.tick(world.getPlayer());
 			}
-			if(player.getY()>395)
+			if(player.getY()>398)
 			{
 				state=GameState.GameOver;
 			}
@@ -115,7 +115,7 @@ public class Game extends Canvas implements Runnable {
 		
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2 = (Graphics2D)g;
-		g2.setColor(Color.darkGray);
+		g2.setColor(Color.BLACK);
 		g2.fillRect(0, 0, WIDTH, HEIGHT);
 
         ///////////////////////////////////////////////////
