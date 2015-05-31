@@ -60,9 +60,13 @@ public class World {
 					blocks.add(new Block(blockMap.get(1), i*32, j*32));
 					if(!doneCount)finishBlock++;
 				}
-				if(pixels[i + j*width] == pixels[14 * 70])
+				if(pixels[i + j*width] == pixels[15 * 70 - 10])
 				{
 					blocks.add(new Block(blockMap.get(3), i * 32, j * 32));
+					if(!doneCount) finishBlock++;
+				}
+				if(pixels[i + j*width] == pixels[14 * 70 - 1]) {
+					blocks.add(new Block(blockMap.get(2), i * 32, j * 32));
 					if(!doneCount) finishBlock++;
 				}
 				if(pixels[i + j*width] == pixels[ 69 + 8*70])
