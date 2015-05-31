@@ -59,7 +59,12 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseMotionListener(mouse);
 		camera = new Camera();
 		this.addKeyListener(new KeyInput());
-		enemies.add(new EvilThang(150,100,world));
+		enemies.add(new EvilThang(255, 300, world, 71));
+		enemies.add(new EvilThang(730, 200, world, 130));
+		enemies.add(new EvilThang(1120, 200, world, 105));
+		enemies.add(new EvilThang(1340, 200, world, 95));
+		enemies.add(new EvilThang(1620, 200, world, 105));
+		enemies.add(new EvilThang(2038, 200, world, 59));
 	}
 	
 	// initializes all the needed variables and loads the resources with ResourceLoader
