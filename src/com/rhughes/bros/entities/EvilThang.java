@@ -14,9 +14,13 @@ import com.rhughes.bros.world.World;
 public class EvilThang extends Mob{
 	
 	private static SpriteSheet sheet = new SpriteSheet("Enemy.png");
+	private int distance;
+	private int travelled;
 
-	public EvilThang(int x, int y, World world) {
+	public EvilThang(int x, int y, World world, int dis) {
 		super(x, y, world);
+		travelled = 0;
+		distance = dis;
 		sprite = new Sprite(2, 1, 50, sheet);
 		sprite2 = new Sprite(1, 1, 50, sheet);
 		Sprite[] rights = new Sprite[]
@@ -41,17 +45,6 @@ public class EvilThang extends Mob{
 
 	@Override
 	public boolean hasHorizontalCollision() {
-			for(int i = 0; i < world.getBlocks().size(); i ++) {
-				Block block = world.getBlocks().get(i);
-				if(getLeft().intersects(block.getRectangle())){
-					setPosition(x + 1, y);
-					return true;
-				}
-				if(getRight().intersects(block.getRectangle())){
-					setPosition(x - 1, y);
-					return true;
-				}
-			}
 			return false;
 	}
 
@@ -78,16 +71,25 @@ public class EvilThang extends Mob{
 	}
 	
 	public void tick() {
-		if(direction == Direction.Right)
-			dx = 2;
-		if(direction == Direction.Left)
-			dx = -2;
-		if(hasHorizontalCollision()){
-			if(direction == Direction.Right){
-				direction = Direction.Left;
+		if(direction == Direction.Right){
+			if (travelled < distance){
+				travelled++;
+				x += 1;
 			}
 			else{
-				direction=Direction.Right;
+				direction = Direction.Left;
+				travelled = 0;
+			}
+			
+		}
+		else{
+			if (travelled < distance){
+				travelled++;
+				x -= 1;
+			}
+			else{
+				direction = Direction.Right;
+				travelled = 0;
 			}
 		}
 		super.tick();
