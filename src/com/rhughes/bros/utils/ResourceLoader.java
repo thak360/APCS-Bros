@@ -39,6 +39,7 @@ public class ResourceLoader {
 		BlockLib.addBlock(1, BlockLib.blockAt(1, 1));
 		BlockLib.addBlock(2, BlockLib.blockAt(2, 1));
 		BlockLib.addBlock(3, BlockLib.blockAt(3, 1));
+		BlockLib.addBlock(4, BlockLib.blockAt(4, 1));
 	}
 
 }
