@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.openal.AL;
 
+import com.rhughes.bros.entities.Coin;
 import com.rhughes.bros.entities.EvilThang;
 import com.rhughes.bros.entities.Player;
 import com.rhughes.bros.enums.GameState;
@@ -30,21 +31,24 @@ public class Game extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 5891488287201426516L;
 	
-	public static final int WIDTH = 1024;
-	public static final int HEIGHT = WIDTH/16*9;
-	public static final String TITLE = "Super APCS Bros.";
-	public static GameState state = GameState.Loading;
 	private boolean running = false;
 	private Thread thread;
+	private Camera camera;
+	private static Game game;
+	private ArrayList<EvilThang> enemies = new ArrayList<EvilThang>();
+	
+	public static final int WIDTH = 1024;
+	public static final int HEIGHT = WIDTH/16*9;
+	
+	public static World world;
+	public static final String TITLE = "Super APCS Bros.";
+	public static GameState state = GameState.Loading;
+	
 	public static Menu menu;
 	public static GameOver gameOver;
 	public static YouWin youWin;
-	private Camera camera;
 	public static Player player;
-	public static World world;
-	private static Game game;
 	public static Pause pause;
-	private ArrayList<EvilThang> enemies= new ArrayList<EvilThang>();
 	
 	public Game() {
 		load();
@@ -93,6 +97,12 @@ public class Game extends Canvas implements Runnable {
 		if(state==GameState.GameOver)
 		{
 			player.setPosition(50, 100);
+			player.score = 0;
+			for(Coin coin : player.eatenCoins){
+				Coin c = coin;
+				c.paidOut = false;
+				world.entities.add(c);
+			}
 		}
 		if(KeyInput.getKey(KeyEvent.VK_P))
 		{
@@ -129,8 +139,12 @@ public class Game extends Canvas implements Runnable {
         }
         else if(state==GameState.Pause)
         	pause.render(g);
-        else if(state==GameState.youWin)
+        else if(state==GameState.youWin){
         	youWin.render(g);
+        	player.score = 0;
+        	for(Coin c : player.eatenCoins)
+        		world.entities.add(c);
+        }
         //render splashscreen
         else if (world != null && state == GameState.Game) {
             //renderBackground(g);
