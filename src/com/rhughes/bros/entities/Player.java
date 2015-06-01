@@ -18,11 +18,12 @@ import com.rhughes.bros.world.World;
 public class Player extends Mob {
 	
 	private static SpriteSheet sheet = new SpriteSheet("player.png");
-	private int score;
+	public int score;
 	private boolean canJumpAgain;
 	private boolean jumped;
 	private ArrayList<Block> blocks = Game.world.getBlockArray();
-
+	public ArrayList<Coin> eatenCoins = new ArrayList<Coin>();
+	
 	public Player(int x, int y, World world) {
 		super(x, y, world);
 		score = 0;
@@ -58,6 +59,14 @@ public class Player extends Mob {
 		if(getRectangle().intersects(blocks.get(world.getFinishBlock()).getRectangle()))
 		{
 			Game.state=GameState.youWin;
+		}
+		for(int i = Game.world.entities.size() - 1; i >= 0; i--){
+			Entity ent = Game.world.entities.get(i);
+			if(ent.getRectangle().intersects(getRectangle()) && ent instanceof Coin){
+				Game.player.eatCoin(ent);
+				Coin c = (Coin)(ent);
+				eatenCoins.add(c);
+			}
 		}
 		dx = 0;
 		if(KeyInput.getKey(KeyEvent.VK_D)) dx += 4;
@@ -160,5 +169,12 @@ public class Player extends Mob {
         return new Rectangle(x + 10, y + 8, 4, 40);
     }
 	
-	
+	public void eatCoin(Entity ent){
+		if(ent instanceof Coin){
+			Coin c = (Coin)(ent);
+			c.die();
+			if(!eatenCoins.contains(ent)) score++;
+			System.out.println(score);
+		}
+	}
 }
