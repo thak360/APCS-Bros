@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import com.rhughes.bros.entities.Coin;
 import com.rhughes.bros.entities.Entity;
 import com.rhughes.bros.entities.Player;
 import com.rhughes.bros.gfx.Sprite;
@@ -19,15 +20,17 @@ import com.rhughes.bros.libs.Reference;
 
 public class World {
 	
-	ArrayList<Entity> entities = new ArrayList<Entity>();
+	public ArrayList<Entity> entities = new ArrayList<Entity>();
 	public ArrayList<Block> blocks = new ArrayList<Block>();
+	public ArrayList<Coin> coins = new ArrayList<Coin>();
+	public ArrayList <Entity> deathBin = new ArrayList<Entity>();
 	
 	private int width;
 	private int height;
 	private static int[] pixels;
 	private Map<Integer, Sprite> blockMap=BlockLib.getBlockMap();
 	int color = 2;
-	private int finishBlock=0;
+	private int finishBlock = 0;
 	private boolean doneCount=false;
 	
 	/* @param path the name and location of the image representing the level */
@@ -53,32 +56,34 @@ public class World {
 		width = image.getWidth();
 		height = image.getHeight();
 		pixels = image.getRGB(0, 0, width, height, pixels, 0, width);
-		for(int i = 0; i< width; i++){
-			for(int j =0; j<height;j++){
+		for(int i = 0; i < width; i++){
+			for(int j =0; j <height; j++){
 				if(pixels[i + j*width] == pixels[9 * 70])
 				{
 					blocks.add(new Block(blockMap.get(1), i*32, j*32));
 					if(!doneCount)finishBlock++;
 				}
-				if(pixels[i + j*width] == pixels[15 * 70 - 10])
+				if(pixels[i + j*width] == pixels[14 * 70])
 				{
 					blocks.add(new Block(blockMap.get(3), i * 32, j * 32));
-					if(!doneCount) finishBlock++;
-				}
-				if(pixels[i + j*width] == pixels[14 * 70 - 1]) {
-					blocks.add(new Block(blockMap.get(2), i * 32, j * 32));
 					if(!doneCount) finishBlock++;
 				}
 				if(pixels[i + j*width] == pixels[ 69 + 8*70])
 				{
 					blocks.add(new Block(blockMap.get(2), i * 32, j * 32));
-					doneCount=true;
+					doneCount = true;
+				}
+				if(pixels[i + j*width] == pixels[23])
+				{
+					Coin c = new Coin(i*32, j*32, this);
+					entities.add(c);
+					coins.add(c);
 				}
 			}
 		}
 	}
 	
-	/* @return returns the last block that matters (used for collision while reading in) */
+	/* @return figures out when to stop reading in from the image */
 	public int getFinishBlock()
 	{
 		return finishBlock;
@@ -107,6 +112,9 @@ public class World {
 	public void tick() {
 		for(Entity ent : entities)
 			ent.tick();
+		for(Entity ent : deathBin)
+			entities.remove(ent);
+		deathBin = new ArrayList<Entity>();
 	}
 	
 	/* @param ent the entity to be put in world */
@@ -123,9 +131,9 @@ public class World {
 	public ArrayList<Block> getBlocks() {
 		return blocks;
 	}
-	 /* @param index the index of the entity you want removed */
-	public void removeEntity(int index) {
-		entities.remove(index);
+	 /* @param ent the entity you want removed -OBSOLETE- */
+	public void removeEntity(Entity ent) {
+		entities.remove(ent);
 	}
 	
 	/* @return the player */
