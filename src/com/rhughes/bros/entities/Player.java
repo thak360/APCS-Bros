@@ -95,7 +95,7 @@ public class Player extends Mob {
 		super.setPosition(x, y);
 	}
 	
-	// returns 0 if bottom collision, 1 if top collision, and -1 if no collision
+	
 	@Override
 	public boolean hasVerticalCollision() {
 		for(int i = 0; i < world.getBlocks().size(); i ++) {
