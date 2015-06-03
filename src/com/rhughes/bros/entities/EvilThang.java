@@ -48,10 +48,12 @@ public class EvilThang extends Mob{
 			return false;
 	}
 
+	//returns rectangle representing bounds
 	public Rectangle getRectangle() {
         return new Rectangle(x, y, 32, 50);
     }
 	
+	//returns true if the EvilThang has a collision vertically
 	@Override
 	public boolean hasVerticalCollision() {
 		for(int i = 0; i < world.getBlocks().size(); i++) {
@@ -70,6 +72,7 @@ public class EvilThang extends Mob{
 		return false;
 	}
 	
+	//moves EvilThang back and forward
 	public void tick() {
 		if(direction == Direction.Right){
 			if (travelled < distance){
@@ -95,21 +98,25 @@ public class EvilThang extends Mob{
 		super.tick();
 	}
 
+	//returns the rectangle representing the top of the EvilThang
 	@Override
     public Rectangle getTop() {
         return new Rectangle(x + 16, y + 4, 12, 4);
     }
 
+	//returns the rectangle representing the bottom of the EvilThang
     @Override
     public Rectangle getBottom() {
         return new Rectangle(x + 16, y + 46, 12, 4);
     }
 
+	//returns the rectangle representing the right of the EvilThang
     @Override
     public Rectangle getRight() {
         return new Rectangle(x + 37, y + 4, 4, 40);
     }
 
+	//returns the rectangle representing the left of the EvilThang
     @Override
     public Rectangle getLeft() {
         return new Rectangle(x + 10, y + 8, 4, 40);
