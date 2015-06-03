@@ -35,21 +35,27 @@ public class Coin extends Entity
 	public void tick()
 		{}
 	
+	//paints object on screen
 	public void render(Graphics g)
 		{anime.runAnimation(g, x, y);}
 	
+	//returns rectangle representing the top of the coin
 	public  Rectangle getTop()
 		{return new Rectangle(x + 6, y, 18, 4);}
 	
+	//returns rectangle representing the bottom of the coin
 	public Rectangle getBottom()
 		{return new Rectangle(x + 6, y + 28, 18, 4);}
 	
+	//returns rectangle representing the left of the coin
 	public Rectangle getLeft()
 		{return new Rectangle(x, y + 6, 4, 20);}
 	
+	//returns rectangle representing the right of the coin
 	public Rectangle getRight()
 		{return new Rectangle(x + 26, y + 6, 20, 4);}
 	
+	//removes the coin from the World
 	public void die()
 	{
 		Game.world.deathBin.add(this);
