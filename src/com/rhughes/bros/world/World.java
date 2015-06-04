@@ -89,6 +89,7 @@ public class World {
 		return finishBlock;
 	}
 	
+	/*finds a block containing x and y*/
 	public Block find(int x, int y){
 		for (Block block : blocks){
 			int x2 = block.getX();
