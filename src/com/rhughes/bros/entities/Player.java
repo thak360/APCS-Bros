@@ -55,6 +55,7 @@ public class Player extends Mob {
 		animeLeft = new Animation(5, lefts);
 	}
 	
+	//updates the logic of player (60 times per second)
 	public void tick() {
 		if(getRectangle().intersects(blocks.get(world.getFinishBlock()).getRectangle()))
 		{
@@ -78,6 +79,7 @@ public class Player extends Mob {
 		super.tick();
 	}
 	
+	// makes the player jump. Note: moving UP in the y direction is negative
 	private void jump() {
 		if(!jumping){
 			jumping = true;
@@ -89,7 +91,7 @@ public class Player extends Mob {
 			dy = -7;
 		}
 	}
-
+	
 	public void setPosition(int x, int y)
 	{
 		super.setPosition(x, y);
@@ -169,12 +171,12 @@ public class Player extends Mob {
         return new Rectangle(x + 10, y + 8, 4, 40);
     }
 	
-	public void eatCoin(Entity ent){
-		if(ent instanceof Coin){
-			Coin c = (Coin)(ent);
-			c.die();
-			if(!eatenCoins.contains(ent)) score++;
-			System.out.println(score);
-		}
+    public void eatCoin(Entity ent){
+	if(ent instanceof Coin){
+		Coin c = (Coin)(ent);
+		c.die();
+		if(!eatenCoins.contains(ent)) score++;
+		System.out.println(score);
 	}
+    }
 }
