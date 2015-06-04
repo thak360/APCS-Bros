@@ -18,9 +18,11 @@ public class Block {
 		this.y = y;
 	}
 	
+	//returns x position of top left corner
 	public int getX()
 	{return x;}
 	
+	//returns y position of top left corner
 	public int getY()
 	{return y;}
 	
@@ -29,10 +31,11 @@ public class Block {
 		sprite.render(g, x, y);
 	}
 	
+	//returns rectangle representing the block
 	public Rectangle getBounds() {
         return new Rectangle(x, y, 32, 32);
     }
-
+	//returns rectangle representing the block
     public Rectangle getRectangle() {
         return new Rectangle(x, y, 32, 32);
     }
